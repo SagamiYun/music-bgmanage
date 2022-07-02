@@ -4,14 +4,25 @@
       <q-toolbar>
         <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
 
-        <q-toolbar-title> SaKaTi音乐</q-toolbar-title>
+        <q-toolbar-title> SaKaTi音乐后台系统</q-toolbar-title>
 
         <q-space />
         <q-avatar color="teal" text-color="white"
           >{{ nicknameFirstWord }}
           <q-menu fit>
             <q-list style="min-width: 100px">
-              <q-item clickable v-close-popup @click="logout">
+              <q-item
+                clickable
+                v-close-popup
+                @click="
+                  () => {
+                    $router.push('/changePassword');
+                  }
+                "
+              >
+                <q-item-section>修改密码</q-item-section>
+              </q-item>
+              <q-item clickable v-close-popup @click="logout()">
                 <q-item-section>退出</q-item-section>
               </q-item>
             </q-list>
@@ -22,21 +33,22 @@
 
     <q-drawer v-model="leftDrawerOpen" show-if-above side="left" bordered>
       <q-list padding class="text-primary">
-        <q-item
-          clickable
-          v-ripple
-          active-class="menu-active text-white"
-          v-for="item in menuRoutes"
-          :key="item.meta.title"
-          :active="item.name === route.name"
-          :to="item.path"
-        >
-          <q-item-section avatar>
-            <q-icon :name="item.meta.icon" />
-          </q-item-section>
+        <div v-for="item in menuRoutes" :key="item.meta.title">
+          <q-item
+            clickable
+            v-ripple
+            active-class="menu-active text-white"
+            v-if="item.name !== 'ChangePassword'"
+            :active="item.name === route.name"
+            :to="item.path"
+          >
+            <q-item-section avatar>
+              <q-icon :name="item.meta.icon" />
+            </q-item-section>
 
-          <q-item-section>{{ item.meta.title }}</q-item-section>
-        </q-item>
+            <q-item-section>{{ item.meta.title }}</q-item-section>
+          </q-item>
+        </div>
       </q-list>
     </q-drawer>
 
@@ -68,8 +80,7 @@ export default {
       },
       menuRoutes,
       route,
-      logout: () =>
-        store.dispatch('user/logout').then(() => window.location.reload())
+      logout: () => store.dispatch('user/logout')
     };
   }
 };

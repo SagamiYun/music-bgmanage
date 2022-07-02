@@ -1,6 +1,7 @@
 <template>
-  <div>欢迎光临 {{ nickname }}</div>
-  <q-btn @click="logout">退出</q-btn>
+  <div class="page">
+    <div>欢迎光临 {{ nickname }}</div>
+  </div>
 </template>
 
 <script>
@@ -12,7 +13,7 @@ export default {
   setup() {
     const store = useStore();
     return {
-      nickname: computed(() => store.state.user.nickname),
+      nickname: computed(() => store.state.user.currentUser.nick_name),
       logout: () =>
         store.dispatch('user/logout').then(() => window.location.reload())
     };
@@ -20,4 +21,9 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.container-fluid {
+  margin: 0;
+  padding: 0;
+}
+</style>

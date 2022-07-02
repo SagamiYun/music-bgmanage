@@ -1,5 +1,5 @@
 <template>
-  <div className="page">
+  <div class="page">
     <div>欢迎光临 {{ nickname }}</div>
   </div>
 </template>

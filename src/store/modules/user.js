@@ -7,7 +7,8 @@ import {
   setToken
 } from '../../utils/auth.js';
 import { createToken } from '../../api/token.js';
-import { me } from '../../api/user.js';
+import { changePassword, lgt, me } from '../../api/user.js';
+import notify from '../../utils/notify.js';
 
 const state = () => ({
   token: getToken(),
@@ -37,10 +38,26 @@ const actions = {
     });
   },
   logout({ commit }) {
-    commit('SET_TOKEN', '');
-    commit('SET_CURRENT_USER', null);
-    removeToken();
-    removeCurrentUser();
+    lgt().then(userInfo => {
+      if (userInfo.status === 1) {
+        commit('SET_TOKEN', '');
+        commit('SET_CURRENT_USER', null);
+        removeToken();
+        removeCurrentUser();
+        window.location.reload();
+      }
+    });
+  },
+  changPassword({ commit }, { password, newPassword }) {
+    return new Promise((resolve, reject) => {
+      changePassword(password, newPassword)
+        .then(ref => {
+          notify.success(`用户${ref.username}密码修改成功！`);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
   },
   fetchCurrentUser({ commit }) {
     return new Promise((resolve, reject) => {
