@@ -64,16 +64,22 @@ export const menuRoutes = [
     component: () => import('../pages/comment/Index.vue')
   },
   {
-    path: 'changePassword',
-    name: 'ChangePassword',
-    meta: { title: '评论管理', icon: 'textsms' },
-    component: () => import('../pages/ChangePassword.vue')
-  },
-  {
     path: 'role',
     name: 'Role',
     meta: { title: '权限管理', icon: 'lock' },
     component: () => import('../pages/role/Index.vue')
+  },
+  {
+    path: 'changePassword',
+    name: 'ChangePassword',
+    meta: { title: '修改密码' },
+    component: () => import('../pages/ChangePassword.vue')
+  },
+  {
+    path: 'changeUserInfo',
+    name: 'ChangeUserInfo',
+    meta: { title: '修改个人信息' },
+    component: () => import('../pages/ChangeUserInfo.vue')
   }
 ];
 const routes = [

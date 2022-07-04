@@ -16,6 +16,17 @@
                 v-close-popup
                 @click="
                   () => {
+                    $router.push('/changeUserInfo');
+                  }
+                "
+              >
+                <q-item-section>修改个人信息</q-item-section>
+              </q-item>
+              <q-item
+                clickable
+                v-close-popup
+                @click="
+                  () => {
                     $router.push('/changePassword');
                   }
                 "
@@ -38,7 +49,9 @@
             clickable
             v-ripple
             active-class="menu-active text-white"
-            v-if="item.name !== 'ChangePassword'"
+            v-if="
+              item.name !== 'ChangePassword' && item.name !== 'ChangeUserInfo'
+            "
             :active="item.name === route.name"
             :to="item.path"
           >

@@ -1,5 +1,5 @@
 <template>
-  <div class="page">
+  <div class="login-page">
     <q-card class="login-form-content">
       <q-form
         class="q-gutter-md"
@@ -47,7 +47,6 @@
 
 <script setup>
 import store from '../store/index.js';
-import router from '../router/index.js';
 import { ref } from 'vue';
 import notify from '../utils/notify.js';
 
@@ -72,4 +71,35 @@ const onSubmit = (password, newPassword, confirmPass) => {
 };
 </script>
 
-<style scoped></style>
+<style scoped lang="less">
+.login-page {
+  width: 75vw;
+  height: 75vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .ValidCode {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
+    span {
+      display: inline-block;
+    }
+  }
+
+  .login-form-content {
+    .title {
+      font-size: 40px;
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    width: 400px;
+    padding: 20px;
+  }
+}
+</style>

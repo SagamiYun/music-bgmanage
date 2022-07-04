@@ -27,3 +27,13 @@ export const lgt = () => {
 export const changePassword = (password, newPassword) => {
   return post('/users/changePassword', { password, newPassword });
 };
+
+export const changeUserInfo = (username, nick_name, address, age, sex) => {
+  return post('/users/changeUserInfo', {
+    username,
+    nick_name,
+    address,
+    age,
+    sex
+  });
+};
