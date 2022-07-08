@@ -12,23 +12,6 @@
               <q-item-section avatar>
                 <q-icon color="primary" name="campaign" />
               </q-item-section>
-
-              <template v-slot:body-cell-operation="props">
-                <q-btn-dropdown
-                  size="sm"
-                  split
-                  color="primary"
-                  label="编辑"
-                  @click="edit(props.row)"
-                />
-                <q-list padding class="text-primary" />
-                <q-input
-                  filled
-                  v-model="props.row.title"
-                  label="昵称："
-                  lazy-rules
-                />
-              </template>
               <q-item-section>{{ item.title }}</q-item-section>
               <q-td>
                 <q-btn
@@ -69,7 +52,6 @@ export default {
     const store = useStore();
     const editRow = ref('');
     const noticePushList = ref([]);
-    const loadingPushNotice = ref(true);
     const createDialogShow = ref(false);
     const createDialog = useToggleDialog(createDialogShow);
     const edit = row => {
@@ -79,7 +61,6 @@ export default {
     const fetchData = () => {
       pushList().then(getPushList => {
         noticePushList.value = getPushList.content;
-        loadingPushNotice.value = false;
       });
     };
     onMounted(fetchData);
