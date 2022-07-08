@@ -20,8 +20,7 @@
           :rules="[val => (val && val.length > 0) || '请输入密码']"
         />
 
-        <!--TODO 请重构刷新页面后的数据-->
-        <div style="display: flex" v-if="connt === 3">
+        <div style="display: flex" v-if="showValidCode" :key="showValidCode">
           <q-input
             prefix-icon="el-icon-key"
             v-model="nowValidCode"
@@ -49,7 +48,6 @@
 import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
 import { ref } from 'vue';
-import { useQuasar } from 'quasar';
 import ValidCode from '../composables/ValidCode.vue';
 import Notify from '../utils/notify.js';
 
@@ -58,7 +56,7 @@ export default {
   components: { ValidCode },
   setup() {
     let validCode = ref('');
-    let connt = ref(3);
+    let showValidCode = ref(false);
     const nowValidCode = ref('');
     const accept = ref(false);
     const username = ref('');
@@ -66,16 +64,17 @@ export default {
     const store = useStore();
     const router = useRouter();
     const route = useRoute();
-    const $q = useQuasar();
     const createValidCode = data => {
       validCode.value = data;
     };
     const onSubmit = (username, password) => {
+      // console.log(showValidCode);
       if (nowValidCode.value.toLowerCase() !== validCode.value.toLowerCase()) {
         Notify.error('验证码错误');
         return;
       }
-      store.dispatch('user/login', { username, password }).then(() => {
+      store.dispatch('user/login', { username, password }).then(res => {
+        showValidCode.value = res[0];
         router.push({ path: route.query.redirect || '/' });
         store.dispatch('user/fetchCurrentUser').then(() => {
           router.push({ path: route.query.redirect || '/' });
@@ -83,13 +82,13 @@ export default {
       });
     };
     return {
-      connt,
       accept,
       username,
       password,
       onSubmit,
       validCode,
       createValidCode,
+      showValidCode,
       nowValidCode
     };
   }

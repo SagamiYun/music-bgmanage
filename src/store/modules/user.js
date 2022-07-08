@@ -9,6 +9,7 @@ import {
 import { createToken } from '../../api/token.js';
 import { changePassword, changeUserInfo, lgt, me } from '../../api/user.js';
 import notify from '../../utils/notify.js';
+import { ref } from 'vue';
 
 const state = () => ({
   token: getToken(),
@@ -29,25 +30,27 @@ const getters = {
 const actions = {
   login({ commit }, { username, password }) {
     return new Promise((resolve, reject) => {
+      let showValidCode = ref(false);
       createToken(username.trim(), password)
         .then(token => {
+          showValidCode.value = false;
+          resolve(showValidCode.value);
           commit('SET_TOKEN', token);
           setToken(token);
-          resolve();
         })
-        // TODO 请重构刷新页面后的显示参数
-        // .catch(connt => {
-        //   this.connt = connt;
-        //   window.location.reload();
-        // })
         .catch(error => {
+          console.log(error);
+          if (error.connt >= 2) {
+            showValidCode.value = true;
+          }
+          resolve([showValidCode.value]);
           reject(error);
         });
     });
   },
   logout({ commit }) {
     lgt().then(userInfo => {
-      if (userInfo.status === 1) {
+      if (userInfo.status !== 0) {
         commit('SET_TOKEN', '');
         commit('SET_CURRENT_USER', null);
         removeToken();

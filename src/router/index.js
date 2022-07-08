@@ -66,8 +66,14 @@ export const menuRoutes = [
   {
     path: 'role',
     name: 'Role',
-    meta: { title: '权限管理', icon: 'lock' },
+    meta: { title: '系统权限管理', icon: 'lock' },
     component: () => import('../pages/role/Index.vue')
+  },
+  {
+    path: 'notice',
+    name: 'Notice',
+    meta: { title: '系统公告管理', icon: 'campaign' },
+    component: () => import('../pages/notice/Index.vue')
   },
   {
     path: 'changePassword',

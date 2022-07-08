@@ -58,7 +58,6 @@ import { computed, reactive, ref } from 'vue';
 import { userSex } from '../utils/dict.js';
 
 const userInfo = reactive(computed(() => store.getters['user/userInfo']));
-console.log(userInfo);
 const options = userSex;
 const username = ref(userInfo.value.username);
 const nick_name = ref(userInfo.value.nick_name);
