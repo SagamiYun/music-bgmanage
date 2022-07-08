@@ -35,12 +35,7 @@
             @click="edit(props.row)"
           >
             <q-list dense>
-              <q-item
-                clickable
-                v-close-popup
-                @click="deleteUser(props.row.id)"
-                v-if="props.row.status !== 1"
-              >
+              <q-item clickable v-close-popup @click="deleteUser(props.row.id)">
                 <q-item-section>
                   <q-item-label>删除</q-item-label>
                 </q-item-section>
@@ -102,6 +97,7 @@ const createDialogShow = ref(false);
 const createDialog = useToggleDialog(createDialogShow);
 const edit = row => {
   editRow.value = row;
+  console.log(editRow.value);
   createDialog.showDialog();
 };
 const pagination = ref({
@@ -109,7 +105,6 @@ const pagination = ref({
   rowsPerPage: 10
 });
 const deleteUser = id => {
-  console.log(id);
   del(id).then(() => {
     notify.success('删除用户成功！');
     fetchData();

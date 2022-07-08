@@ -67,23 +67,19 @@ const options = userSex;
 const show = ref(true);
 
 const isEdit = ref(Boolean(props.data));
-const user = reactive(props.data || {});
+const user = reactive(props.data || { name: '', description: '' });
 
 const loading = ref(false);
 
 const emmit = defineEmits(['create-success']);
 const createUser = () => {
   loading.value = true;
-  create(user)
-    .then(createdUser => {
-      loading.value = false;
-      show.value = false;
-      notify.success(`用户${createdUser.username}创建成功！`);
-      emmit('create-success');
-    })
-    .catch(() => {
-      loading.value = false;
-    });
+  create(user).then(createdUser => {
+    loading.value = false;
+    show.value = false;
+    notify.success(`用户《${createdUser.username}》创建成功！`);
+    emmit('create-success');
+  });
 };
 
 const editUser = () => {
@@ -92,7 +88,7 @@ const editUser = () => {
     loading.value = false;
     console.log(user);
     show.value = false;
-    notify.success(`用户${updatedUser.username}更新成功！`);
+    notify.success(`用户《${updatedUser.username}》更新成功！`);
     emmit('edit-success');
   });
 };

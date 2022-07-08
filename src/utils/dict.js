@@ -23,3 +23,15 @@ export const loginStatusColor = {
   1: 'green',
   2: 'red'
 };
+
+export const noticeStatus = {
+  CLOSED: '下线',
+  PUSH: '上线',
+  DRAFT: '草稿'
+};
+
+export const noticeStatusColor = {
+  CLOSED: 'red',
+  PUSH: 'green',
+  DRAFT: 'grey-9'
+};

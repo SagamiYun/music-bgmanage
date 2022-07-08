@@ -20,6 +20,17 @@
           :rules="[val => (val && val.length > 0) || '请输入密码']"
         />
 
+        <div style="display: flex" v-if="showValidCode" :key="showValidCode">
+          <q-input
+            prefix-icon="el-icon-key"
+            v-model="nowValidCode"
+            style="width: 70%"
+            placeholder="请输入验证码"
+            :rules="[val => (val && val.length > 0) || '请输入验证码']"
+          ></q-input>
+          <valid-code @input="createValidCode" />
+        </div>
+
         <div>
           <q-btn
             class="full-width"
@@ -37,21 +48,33 @@
 import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
 import { ref } from 'vue';
-import { useQuasar } from 'quasar';
+import ValidCode from '../composables/ValidCode.vue';
+import Notify from '../utils/notify.js';
 
 export default {
   name: 'Login',
+  components: { ValidCode },
   setup() {
+    let validCode = ref('');
+    let showValidCode = ref(false);
+    const nowValidCode = ref('');
     const accept = ref(false);
     const username = ref('');
     const password = ref('');
-    const validCode = ref('');
     const store = useStore();
     const router = useRouter();
     const route = useRoute();
-    const $q = useQuasar();
+    const createValidCode = data => {
+      validCode.value = data;
+    };
     const onSubmit = (username, password) => {
-      store.dispatch('user/login', { username, password }).then(() => {
+      // console.log(showValidCode);
+      if (nowValidCode.value.toLowerCase() !== validCode.value.toLowerCase()) {
+        Notify.error('验证码错误');
+        return;
+      }
+      store.dispatch('user/login', { username, password }).then(res => {
+        showValidCode.value = res[0];
         router.push({ path: route.query.redirect || '/' });
         store.dispatch('user/fetchCurrentUser').then(() => {
           router.push({ path: route.query.redirect || '/' });
@@ -63,7 +86,10 @@ export default {
       username,
       password,
       onSubmit,
-      validCode
+      validCode,
+      createValidCode,
+      showValidCode,
+      nowValidCode
     };
   }
 };
@@ -77,6 +103,17 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  .ValidCode {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
+    span {
+      display: inline-block;
+    }
+  }
 
   .login-form-content {
     .title {

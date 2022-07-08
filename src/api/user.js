@@ -20,6 +20,20 @@ export const del = id => {
   return post('/users/delete', id);
 };
 
-export const logout = id => {
-  return post('/users/logout', id);
+export const lgt = () => {
+  return get('/users/logout');
+};
+
+export const changePassword = (password, newPassword) => {
+  return post('/users/changePassword', { password, newPassword });
+};
+
+export const changeUserInfo = (username, nick_name, address, age, sex) => {
+  return post('/users/changeUserInfo', {
+    username,
+    nick_name,
+    address,
+    age,
+    sex
+  });
 };
