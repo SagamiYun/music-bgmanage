@@ -71,7 +71,6 @@ export default {
       createDialog,
       noticePushList,
       createDialogShow,
-      loadingPushNotice,
       lorem:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
       nickname: computed(() => store.state.user.currentUser.nick_name),
