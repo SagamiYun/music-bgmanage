@@ -109,7 +109,6 @@ const pagination = ref({
   rowsPerPage: 10
 });
 const deleteUser = id => {
-  console.log(id);
   del(id).then(() => {
     notify.success('删除用户成功！');
     fetchData();
