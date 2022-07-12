@@ -32,11 +32,11 @@ const actions = {
     return new Promise((resolve, reject) => {
       let showValidCode = ref(false);
       createToken(username.trim(), password)
-        .then(token => {
+        .then(res => {
           showValidCode.value = false;
           resolve(showValidCode.value);
-          commit('SET_TOKEN', token);
-          setToken(token);
+          commit('SET_TOKEN', res.token);
+          setToken(res.token);
         })
         .catch(error => {
           console.log(error);

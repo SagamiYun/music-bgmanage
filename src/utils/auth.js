@@ -6,7 +6,7 @@ const UserKey = 'current-user';
 const defaultUser = {
   username: null,
   nickname: null,
-  roles: []
+  status: null
 };
 
 export const getToken = () => {
