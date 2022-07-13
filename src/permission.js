@@ -7,12 +7,11 @@ const whiteList = ['/login', '/403', '/404'];
 
 router.beforeEach(async (to, from, next) => {
   const hasToken = getToken();
-
   if (hasToken) {
     if (to.path === '/login') {
       next({ path: '/' });
     } else {
-      if (store.state.user.currentUser.status !== 2) {
+      if (store.state.user.status !== 2) {
         next();
       } else {
         await store.dispatch('user/logout');
@@ -24,7 +23,6 @@ router.beforeEach(async (to, from, next) => {
         next(`/login?redirect=${to.path}`);
       }
     }
-    next();
   } else {
     if (whiteList.indexOf(to.path) !== -1) {
       next();

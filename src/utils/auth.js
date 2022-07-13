@@ -2,11 +2,24 @@ import Cookies from 'js-cookie';
 
 const TokenKey = 'SaKaTi-token';
 const UserKey = 'current-user';
+const StatusKey = 'current-status';
 
 const defaultUser = {
   username: null,
   nickname: null,
   status: null
+};
+
+export const getStatus = () => {
+  return Cookies.get(StatusKey);
+};
+
+export const setStatus = status => {
+  return Cookies.set(StatusKey, status);
+};
+
+export const removeStatus = () => {
+  Cookies.remove(StatusKey);
 };
 
 export const getToken = () => {

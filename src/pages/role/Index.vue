@@ -62,12 +62,38 @@
                     <q-btn
                       v-if="
                         props.row.status === 1 &&
-                        userInfo.username !== props.row.username
+                        userInfo.username !== props.row.username &&
+                        props.row.admin_roles[0].name !== 'super_admin'
                       "
                       size="sm"
                       color="deep-orange"
                       glossy
                       label="强制下线"
+                      @click="forcedLogout(props.row.id)"
+                    />
+                    <q-btn
+                      v-if="
+                        props.row.status === 0 &&
+                        userInfo.username !== props.row.username &&
+                        props.row.admin_roles[0].name !== 'super_admin'
+                      "
+                      size="sm"
+                      color="deep-orange"
+                      glossy
+                      label="封禁该管理员"
+                      @click="blocked(props.row.id)"
+                    />
+                    <q-btn
+                      v-if="
+                        props.row.status === 2 &&
+                        userInfo.username !== props.row.username &&
+                        props.row.admin_roles[0].name !== 'super_admin'
+                      "
+                      size="sm"
+                      color="green"
+                      glossy
+                      label="解禁该管理员"
+                      @click="free(props.row.id)"
                     />
                   </q-btn-group>
                 </q-td>
@@ -96,14 +122,14 @@
               </template>
 
               <template v-slot:body-cell-rolesOperation="props">
-                <q-td :props="props" style="width: 700px">
+                <q-td :props="props" style="width: 800px">
                   <q-select
                     option-value="id"
                     option-label="comment"
                     options-dense
                     v-model="props.row.role_permissions"
                     :options="options"
-                    label="Multi with toggle"
+                    label="权限选择"
                     multiple
                     use-chips
                   >
@@ -134,10 +160,6 @@
                     @click="changePermission(props.row)"
                   >
                     提交更改
-                    <template v-slot:loading>
-                      <q-spinner-hourglass class="on-left" />
-                      Loading...
-                    </template>
                   </q-btn>
                 </q-td>
               </template>
@@ -173,7 +195,10 @@ import {
 } from '../../composables/useRolesFetchData.js';
 import store from '../../store/index.js';
 import {
+  blockedUser,
   changeRolePermission,
+  forcedUserLogout,
+  freeUser,
   userDownRole,
   userUpRole
 } from '../../api/role.js';
@@ -240,13 +265,32 @@ const paginationPermission = ref({
 
 const downRole = id => {
   userDownRole(id).then(() => {
-    notify.success('已降低该用户权限！');
+    notify.success('已降低该管理员权限！');
     fetchData();
   });
 };
 const upRole = id => {
   userUpRole(id).then(() => {
-    notify.success('已提升该用户权限！');
+    notify.success('已提升该管理员权限！');
+    fetchData();
+  });
+};
+
+const forcedLogout = id => {
+  forcedUserLogout(id).then(() => {
+    notify.success('已强制下线该管理员！');
+    fetchData();
+  });
+};
+const blocked = id => {
+  blockedUser(id).then(() => {
+    notify.success('已封禁该管理员！');
+    fetchData();
+  });
+};
+const free = id => {
+  freeUser(id).then(() => {
+    notify.success('已解禁该管理员！');
     fetchData();
   });
 };

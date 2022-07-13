@@ -16,6 +16,18 @@ export const userDownRole = id => {
   return post('/roles/downRole', id);
 };
 
+export const forcedUserLogout = id => {
+  return post('/roles/forcedLogout', id);
+};
+
+export const blockedUser = id => {
+  return post('/roles/blockedUser', id);
+};
+
+export const freeUser = id => {
+  return post('/roles/freeUser', id);
+};
+
 export const changeRolePermission = (id, rolePermissions) => {
   return post('/roles/changePermission', { id, rolePermissions });
 };

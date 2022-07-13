@@ -1,6 +1,7 @@
 import axios from 'axios';
 import store from '../store';
 import notify from '../utils/notify.js';
+import { removeCurrentUser, removeStatus, removeToken } from '../utils/auth.js';
 
 const baseURL = import.meta.env.VITE_API_HOST;
 // const tokenPrefix = 'Bearer ';
@@ -12,9 +13,9 @@ export const instance = axios.create({
 instance.interceptors.request.use(
   config => {
     // do something before request is sent
-
     if (store.state.user.token) {
       config.headers['token'] = store.state.user.token;
+      config.headers['status'] = store.state.user.status;
     }
     return config;
   },
@@ -34,6 +35,7 @@ instance.interceptors.response.use(
     return response.data;
   },
   error => {
+    console.log(error);
     handleErrorResponse(error.response);
     return Promise.reject(error);
   }
@@ -41,7 +43,13 @@ instance.interceptors.response.use(
 
 const handleErrorResponse = response => {
   if (response.status === 401 || response.status === 403) {
-    store.dispatch('user/logout').then(() => window.location.reload());
+    store.commit('SET_TOKEN', '');
+    store.commit('SET_CURRENT_USER', null);
+    store.commit('SET_STATUS', '');
+    removeToken();
+    removeCurrentUser();
+    removeStatus();
+    window.location.reload();
   }
   if (response.data instanceof Array) {
     response.data.forEach(item => {

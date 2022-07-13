@@ -1,9 +1,12 @@
 import {
   getCurrentUser,
+  getStatus,
   getToken,
   removeCurrentUser,
+  removeStatus,
   removeToken,
   setCurrentUser,
+  setStatus,
   setToken
 } from '../../utils/auth.js';
 import { createToken } from '../../api/token.js';
@@ -13,7 +16,8 @@ import { ref } from 'vue';
 
 const state = () => ({
   token: getToken(),
-  currentUser: getCurrentUser()
+  currentUser: getCurrentUser(),
+  status: getStatus()
 });
 
 const getters = {
@@ -35,6 +39,8 @@ const actions = {
         .then(res => {
           showValidCode.value = false;
           resolve(showValidCode.value);
+          commit('SET_STATUS', res.status);
+          setStatus(res.status);
           commit('SET_TOKEN', res.token);
           setToken(res.token);
         })
@@ -53,8 +59,10 @@ const actions = {
       if (userInfo.status !== 0) {
         commit('SET_TOKEN', '');
         commit('SET_CURRENT_USER', null);
+        commit('SET_STATUS', '');
         removeToken();
         removeCurrentUser();
+        removeStatus();
         window.location.reload();
       }
     });
@@ -103,6 +111,9 @@ const mutations = {
   },
   SET_CURRENT_USER: (state, currentUser) => {
     state.currentUser = currentUser;
+  },
+  SET_STATUS: (state, status) => {
+    state.status = status;
   }
 };
 

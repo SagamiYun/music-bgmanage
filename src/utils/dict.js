@@ -47,52 +47,67 @@ export const routerPermissionEnum = [
   },
   {
     id: 2,
-    comment: '书籍管理',
-    label: '书籍管理'
+    comment: '信息统计',
+    label: '信息统计'
   },
   {
     id: 3,
-    comment: '图片管理',
-    label: '图片管理'
+    comment: '控制台',
+    label: '控制台'
   },
   {
     id: 4,
-    comment: '新闻管理',
-    label: '新闻管理'
+    comment: '管理员管理',
+    label: '管理员管理'
   },
   {
     id: 5,
-    comment: '百度地图',
-    label: '百度地图'
+    comment: '用户管理',
+    label: '用户管理'
   },
   {
     id: 6,
-    comment: '在线留言',
-    label: '在线留言'
+    comment: '歌曲管理',
+    label: '歌曲管理'
   },
   {
     id: 7,
-    comment: '用户管理',
-    label: '用户管理'
+    comment: '艺术家管理',
+    label: '艺术家管理'
   },
   {
     id: 8,
-    comment: '路由管理',
-    label: '路由管理'
+    comment: '歌单管理',
+    label: '歌单管理'
   },
   {
     id: 9,
-    comment: '用户管理',
-    label: '用户管理'
+    comment: '专辑管理',
+    label: '专辑管理'
   },
   {
     id: 10,
-    comment: '个人信息',
-    label: '个人信息'
+    comment: '评论管理',
+    label: '评论管理'
   },
   {
     id: 11,
+    comment: '系统权限管理',
+    label: '系统权限管理'
+  },
+  {
+    id: 12,
+    comment: '系统公告管理',
+    label: '系统公告管理'
+  },
+  {
+    id: 13,
     comment: '修改密码',
     label: '修改密码'
+  },
+  {
+    id: 14,
+    comment: '修改个人信息',
+    label: '修改个人信息'
   }
 ];
