@@ -1,13 +1,15 @@
 import router from './router';
-import { getToken } from './utils/auth.js';
+import { getCurrentRouter, getToken } from './utils/auth.js';
 import { Notify } from 'quasar';
 import store from './store/index.js';
+import { activeRouter } from './router/activeRouter.js';
 
 const whiteList = ['/login', '/403', '/404'];
 
 router.beforeEach(async (to, from, next) => {
   const hasToken = getToken();
-  if (hasToken) {
+  const hasRouter = getCurrentRouter();
+  if (hasToken && hasRouter) {
     if (to.path === '/login') {
       next({ path: '/' });
     } else {

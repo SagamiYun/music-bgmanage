@@ -3,6 +3,7 @@ import Cookies from 'js-cookie';
 const TokenKey = 'SaKaTi-token';
 const UserKey = 'current-user';
 const StatusKey = 'current-status';
+const RouterKey = 'current-router';
 
 const defaultUser = {
   username: null,
@@ -45,4 +46,16 @@ export const getCurrentUser = () => {
 
 export const removeCurrentUser = () => {
   Cookies.remove(UserKey);
+};
+
+export const setCurrentRouter = currentRouter => {
+  return Cookies.set(RouterKey, currentRouter);
+};
+
+export const getCurrentRouter = () => {
+  return Cookies.get(RouterKey);
+};
+
+export const removeCurrentRouter = () => {
+  Cookies.remove(RouterKey);
 };

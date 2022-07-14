@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 
 import Layout from '../pages/Layout.vue';
+import { activeRouter } from './activeRouter.js';
 
 export const menuRoutes = [
   {
@@ -91,6 +92,7 @@ export const menuRoutes = [
 const routes = [
   {
     path: '/',
+    name: 'Layout',
     component: Layout,
     redirect: 'index',
     children: menuRoutes
@@ -98,15 +100,15 @@ const routes = [
   {
     path: '/login',
     component: () => import('../pages/Login.vue')
-  },
-  {
-    path: '/403',
-    component: () => import('../pages/403.vue')
-  },
-  {
-    path: '/:pathMatch(.*)',
-    component: () => import('../pages/404.vue')
   }
+  // {
+  //   path: '/403',
+  //   component: () => import('../pages/403.vue')
+  // },
+  // {
+  //   path: '/:pathMatch(.*)',
+  //   component: () => import('../pages/404.vue')
+  // }
 ];
 const router = createRouter({
   history: createWebHashHistory(),

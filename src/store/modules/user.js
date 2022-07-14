@@ -1,10 +1,13 @@
 import {
+  getCurrentRouter,
   getCurrentUser,
   getStatus,
   getToken,
+  removeCurrentRouter,
   removeCurrentUser,
   removeStatus,
   removeToken,
+  setCurrentRouter,
   setCurrentUser,
   setStatus,
   setToken
@@ -13,11 +16,13 @@ import { createToken } from '../../api/token.js';
 import { changePassword, changeUserInfo, lgt, me } from '../../api/user.js';
 import notify from '../../utils/notify.js';
 import { ref } from 'vue';
+import { activeRouter } from '../../router/activeRouter.js';
 
 const state = () => ({
   token: getToken(),
   currentUser: getCurrentUser(),
-  status: getStatus()
+  status: getStatus(),
+  router: getCurrentRouter()
 });
 
 const getters = {
@@ -43,6 +48,9 @@ const actions = {
           setStatus(res.status);
           commit('SET_TOKEN', res.token);
           setToken(res.token);
+          commit('SET_ROUTER', res.router);
+          setCurrentRouter(res.router);
+          activeRouter();
         })
         .catch(error => {
           console.log(error);
@@ -60,9 +68,11 @@ const actions = {
         commit('SET_TOKEN', '');
         commit('SET_CURRENT_USER', null);
         commit('SET_STATUS', '');
+        commit('SET_ROUTER', '');
         removeToken();
         removeCurrentUser();
         removeStatus();
+        removeCurrentRouter();
         window.location.reload();
       }
     });
@@ -114,6 +124,9 @@ const mutations = {
   },
   SET_STATUS: (state, status) => {
     state.status = status;
+  },
+  SET_ROUTER: (state, currentRouter) => {
+    state.router = currentRouter;
   }
 };
 
