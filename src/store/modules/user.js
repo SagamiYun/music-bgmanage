@@ -16,13 +16,13 @@ import { createToken } from '../../api/token.js';
 import { changePassword, changeUserInfo, lgt, me } from '../../api/user.js';
 import notify from '../../utils/notify.js';
 import { ref } from 'vue';
-import { activeRouter } from '../../router/activeRouter.js';
 
 const state = () => ({
   token: getToken(),
   currentUser: getCurrentUser(),
   status: getStatus(),
-  router: getCurrentRouter()
+  router: getCurrentRouter(),
+  routerMark: false
 });
 
 const getters = {
@@ -50,7 +50,6 @@ const actions = {
           setToken(res.token);
           commit('SET_ROUTER', res.router);
           setCurrentRouter(res.router);
-          activeRouter();
         })
         .catch(error => {
           console.log(error);
@@ -68,7 +67,7 @@ const actions = {
         commit('SET_TOKEN', '');
         commit('SET_CURRENT_USER', null);
         commit('SET_STATUS', '');
-        commit('SET_ROUTER', '');
+        commit('SET_ROUTER', null);
         removeToken();
         removeCurrentUser();
         removeStatus();

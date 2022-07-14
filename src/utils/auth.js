@@ -49,11 +49,12 @@ export const removeCurrentUser = () => {
 };
 
 export const setCurrentRouter = currentRouter => {
-  return Cookies.set(RouterKey, currentRouter);
+  return Cookies.set(RouterKey, JSON.stringify(currentRouter));
 };
 
 export const getCurrentRouter = () => {
-  return Cookies.get(RouterKey);
+  const router = Cookies.get(RouterKey);
+  return router === undefined ? [] : JSON.parse(router);
 };
 
 export const removeCurrentRouter = () => {

@@ -1,20 +1,37 @@
 import Layout from '../pages/Layout.vue';
 import router, { menuRoutes } from './index.js';
 import { getCurrentRouter } from '../utils/auth.js';
+import store from '../store/index.js';
 
 export function activeRouter() {
-  console.log(router.getRoutes());
-  menuRoutes.push({
-    path: 'test',
-    name: 'Test',
-    meta: { title: '主页', icon: 'home' },
-    component: () => import('../pages/index/Index.vue')
+  const currentRouter = getCurrentRouter();
+  currentRouter.forEach(p => {
+    if (p.icon !== null) {
+      menuRoutes.push({
+        path: p.path,
+        name: p.name,
+        meta: { title: p.comment, icon: p.icon },
+        component: () => import(`../pages/${p.path}/Index.vue`)
+      });
+      router.addRoute('Layout', {
+        path: p.path,
+        name: p.name,
+        meta: { title: p.comment, icon: p.icon },
+        component: () => import(`../pages/${p.path}/Index.vue`)
+      });
+    }
   });
   router.addRoute('Layout', {
-    path: 'test',
-    name: 'Test',
-    meta: { title: '主页', icon: 'home' },
-    component: () => import('../pages/index/Index.vue')
+    path: 'changePassword',
+    name: 'ChangePassword',
+    meta: { title: '修改密码' },
+    component: () => import('../pages/ChangePassword.vue')
+  });
+  router.addRoute('Layout', {
+    path: 'changeUserInfo',
+    name: 'ChangeUserInfo',
+    meta: { title: '修改个人信息' },
+    component: () => import('../pages/ChangeUserInfo.vue')
   });
   router.addRoute({
     path: '/403',
@@ -24,35 +41,5 @@ export function activeRouter() {
     path: '/:pathMatch(.*)',
     component: () => import('../pages/404.vue')
   });
-
-  // const userStr = JSON.parse(sessionStorage.getItem('router'));
-  // if (userStr) {
-  //   let root = {
-  //     path: '/',
-  //     name: 'Layout',
-  //     component: Layout,
-  //     redirect: 'index',
-  //     children: []
-  //   };
-  //   // console.log(useRoute().name);
-  //   console.log(JSON.parse(sessionStorage.getItem('router')));
-  //   const currentRouter = store.state.user.currentRouter;
-  //   userStr.forEach(key => {
-  //     root.children.push({
-  //       path: key.path,
-  //       name: key.name,
-  //       meta: { title: key.comment, icon: key.icon },
-  //       component: () => import(`../pages/${key.path}/Index.vue`)
-  //     });
-  //   });
-  // userStr.foreach(key => {
-  //   root.children.push({
-  //     path: key.path,
-  //     name: key.name,
-  //     meta: { title: key.comment, icon: key.icon },
-  //     component: () => import(`./pages/${key.path}/Index.vue`)
-  //   });
-  // });
-  // router.addRoute(root);
-  // }
+  store.state.user.routerMark = true;
 }

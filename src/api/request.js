@@ -1,7 +1,12 @@
 import axios from 'axios';
 import store from '../store';
 import notify from '../utils/notify.js';
-import { removeCurrentUser, removeStatus, removeToken } from '../utils/auth.js';
+import {
+  removeCurrentRouter,
+  removeCurrentUser,
+  removeStatus,
+  removeToken
+} from '../utils/auth.js';
 
 const baseURL = import.meta.env.VITE_API_HOST;
 // const tokenPrefix = 'Bearer ';
@@ -46,9 +51,11 @@ const handleErrorResponse = response => {
     store.commit('SET_TOKEN', '');
     store.commit('SET_CURRENT_USER', null);
     store.commit('SET_STATUS', '');
+    store.commit('SET_ROUTER', null);
     removeToken();
     removeCurrentUser();
     removeStatus();
+    removeCurrentRouter();
     window.location.reload();
   }
   if (response.data instanceof Array) {

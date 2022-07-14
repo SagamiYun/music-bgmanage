@@ -99,15 +99,5 @@ export const routerPermissionEnum = [
     id: 12,
     comment: '系统公告管理',
     label: '系统公告管理'
-  },
-  {
-    id: 13,
-    comment: '修改密码',
-    label: '修改密码'
-  },
-  {
-    id: 14,
-    comment: '修改个人信息',
-    label: '修改个人信息'
   }
 ];

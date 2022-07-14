@@ -14,7 +14,12 @@ router.beforeEach(async (to, from, next) => {
       next({ path: '/' });
     } else {
       if (store.state.user.status !== 2) {
-        next();
+        if (!store.state.user.routerMark) {
+          activeRouter();
+          next({ ...to, replace: true });
+        } else {
+          next();
+        }
       } else {
         await store.dispatch('user/logout');
         Notify.create({
