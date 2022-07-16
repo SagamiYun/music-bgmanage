@@ -1,21 +1,21 @@
 import { get, post, put } from './request.js';
 
-export const list = () => {
-  return get('/musics');
+export const list = paging => {
+  return get('/musics/index', { params: paging });
 };
 
 export const create = music => {
-  return post('/musics', music);
+  return post('/musics/create', music);
 };
 
 export const update = (id, music) => {
-  return put(`/musics/${id}`, music);
+  return put(`/musics/update/${id}`, music);
 };
 
 export const publish = id => {
-  return post(`/musics/${id}/publish`);
+  return post('/musics/publish', id);
 };
 
 export const close = id => {
-  return post(`/musics/${id}/close`);
+  return post('/musics/close', id);
 };

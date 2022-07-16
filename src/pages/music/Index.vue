@@ -7,7 +7,12 @@
         @click="createDialog.showDialog()"
       />
     </div>
-    <q-table :columns="columns" :rows="data" row-key="id">
+    <q-table
+      :columns="columns"
+      :rows="data"
+      row-key="id"
+      :loading="loadingMusic"
+    >
       <template v-slot:body-cell-status="props">
         <q-td :props="props">
           <q-badge
@@ -94,19 +99,31 @@ const columns = [
 ];
 const data = ref([]);
 const createDialogShow = ref(false);
-const editDialogShow = ref(false);
 const createDialog = useToggleDialog(createDialogShow);
 const editRow = ref(null);
+const loadingMusic = ref(true);
+const pagination = ref({
+  page: 1,
+  rowsPerPage: 10
+});
 
 const edit = row => {
   editRow.value = row;
   createDialog.showDialog();
 };
 const fetchData = () => {
-  list().then(musicList => {
-    data.value = musicList;
+  const pageable = {
+    page: pagination.value.page - 1,
+    size: pagination.value.rowsPerPage
+  };
+  list(pageable).then(musicList => {
+    loadingMusic.value = false;
+    data.value = musicList.content;
+    pagination.value.page = musicList.number + 1;
+    pagination.value.rowsNumber = musicList.totalElements;
   });
 };
+
 onMounted(fetchData);
 
 const publishMusic = id => {
