@@ -2,45 +2,36 @@
   <q-dialog v-model="show" persistent>
     <q-card style="min-width: 350px; padding: 20px 10px">
       <q-card-section>
-        <div class="text-h6">添加用户</div>
+        <div class="text-h6">添加专辑</div>
       </q-card-section>
-      <q-form @submit="isEdit ? editUser() : createUser()" class="q-gutter-md">
+      <q-form
+        @submit="isEdit ? editAlbum() : createAlbum()"
+        class="q-gutter-md"
+      >
         <q-card-section>
           <q-input
             dense
-            v-model="user.username"
-            label="用户名"
+            v-model="album.name"
+            label="专辑名"
             autofocus
             @keyup.enter="show = false"
-            :rules="[val => (val && val.length > 0) || '请填写用户名！']"
+            :rules="[val => (val && val.length > 0) || '请填写音乐名！']"
           />
 
           <q-input
             dense
-            v-model="user.nick_name"
-            label="昵称"
-            autofocus
-            @keyup.enter="show = false"
-          />
-
-          <q-select v-model="user.sex" :options="options" label="性别" />
-
-          <q-input
-            dense
-            v-model="user.address"
-            label="地址"
+            v-model="album.description"
+            label="简介"
             autofocus
             @keyup.enter="show = false"
           />
         </q-card-section>
+        <q-card-section>
+          <uploader label="上传专辑图片" v-model:file="album.album_file" />
+        </q-card-section>
 
         <q-card-actions align="right" class="text-primary">
-          <q-btn
-            :loading="loading"
-            label="确认"
-            type="submit"
-            color="primary"
-          />
+          <q-btn label="确认" type="submit" color="primary" />
           <q-btn flat label="取消" v-close-popup />
         </q-card-actions>
       </q-form>
@@ -50,9 +41,9 @@
 
 <script setup>
 import { reactive, ref } from 'vue';
-import { create, update } from '../../api/user.js';
+import { create, update } from '../../api/album.js';
 import notify from '../../utils/notify.js';
-import { userSex } from '../../utils/dict.js';
+import Uploader from '../../composables/Uploader.vue';
 
 const props = defineProps({
   data: {
@@ -63,32 +54,25 @@ const props = defineProps({
   }
 });
 
-const options = userSex;
 const show = ref(true);
 
+const file = ref(null);
 const isEdit = ref(Boolean(props.data));
-const user = reactive(props.data || { name: '', description: '' });
-
-const loading = ref(false);
+const album = reactive(props.data || { name: '', description: '', file: null });
 
 const emmit = defineEmits(['create-success']);
-const createUser = () => {
-  loading.value = true;
-  create(user).then(createdUser => {
-    loading.value = false;
+const createAlbum = () => {
+  create(album).then(createdAlbum => {
     show.value = false;
-    notify.success(`用户《${createdUser.username}》创建成功！`);
+    notify.success(`专辑《${createdAlbum}》创建成功！`);
     emmit('create-success');
   });
 };
 
-const editUser = () => {
-  loading.value = true;
-  update(user).then(updatedUser => {
-    loading.value = false;
-    console.log(user);
+const editAlbum = () => {
+  update(album.id, album).then(updatedAlbum => {
     show.value = false;
-    notify.success(`用户《${updatedUser.username}》更新成功！`);
+    notify.success(`专辑《${updatedAlbum}》更新成功！`);
     emmit('edit-success');
   });
 };
