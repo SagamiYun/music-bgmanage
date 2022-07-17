@@ -15,7 +15,7 @@
             label="专辑名"
             autofocus
             @keyup.enter="show = false"
-            :rules="[val => (val && val.length > 0) || '请填写音乐名！']"
+            :rules="[val => (val && val.length > 0) || '请填写专辑名！']"
           />
 
           <q-input
@@ -56,9 +56,10 @@ const props = defineProps({
 
 const show = ref(true);
 
-const file = ref(null);
 const isEdit = ref(Boolean(props.data));
-const album = reactive(props.data || { name: '', description: '', file: null });
+const album = reactive(
+  props.data || { name: '', description: '', album_file: null }
+);
 
 const emmit = defineEmits(['create-success']);
 const createAlbum = () => {

@@ -10,6 +10,18 @@ export const musicStatusColor = {
   DRAFT: 'grey-9'
 };
 
+export const artistStatus = {
+  CLOSED: '下线',
+  PUBLISHED: '上线',
+  DRAFT: '草稿'
+};
+
+export const artistStatusColor = {
+  CLOSED: 'red',
+  PUBLISHED: 'green',
+  DRAFT: 'grey-9'
+};
+
 export const userSex = ['男', '女', '未知'];
 
 export const loginStatus = {

@@ -116,11 +116,11 @@ const fetchData = () => {
     page: pagination.value.page - 1,
     size: pagination.value.rowsPerPage
   };
-  list(pageable).then(musicList => {
+  list(pageable).then(albumList => {
     loadingAlbum.value = false;
-    data.value = musicList.content;
-    pagination.value.page = musicList.number + 1;
-    pagination.value.rowsNumber = musicList.totalElements;
+    data.value = albumList.content;
+    pagination.value.page = albumList.number + 1;
+    pagination.value.rowsNumber = albumList.totalElements;
   });
 };
 
