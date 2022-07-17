@@ -33,7 +33,7 @@
           >
             <q-list dense>
               <q-item
-                v-if="props.row.status !== 'PUBLISHED'"
+                v-if="props.row.status !== 'PUSH'"
                 clickable
                 v-close-popup
                 @click="publishSongsheet(props.row.id)"
@@ -43,7 +43,7 @@
                 </q-item-section>
               </q-item>
               <q-item
-                v-if="props.row.status === 'PUBLISHED'"
+                v-if="props.row.status === 'PUSH'"
                 clickable
                 v-close-popup
                 @click="closeSongsheet(props.row.id)"
