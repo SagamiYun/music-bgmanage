@@ -3,7 +3,7 @@
     <div class="q-mt-md q-mb-md">
       <q-btn
         color="primary"
-        label="添加用户"
+        label="添加管理员"
         @click="createDialog.showDialog()"
       />
     </div>
@@ -71,7 +71,7 @@ import { loginStatus, loginStatusColor } from '../../utils/dict.js';
 const columns = [
   {
     field: 'username',
-    label: '用户名'
+    label: '管理员名'
   },
   {
     field: 'nick_name',
@@ -110,7 +110,7 @@ const pagination = ref({
 });
 const deleteUser = id => {
   del(id).then(() => {
-    notify.success('删除用户成功！');
+    notify.success('删除管理员成功！');
     fetchData();
   });
 };
