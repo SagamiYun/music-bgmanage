@@ -22,6 +22,28 @@ export const artistStatusColor = {
   DRAFT: 'grey-9'
 };
 
+export const userStatus = {
+  NOTLOGGED: '未登录',
+  LOGGED: '已登录',
+  LOCKED: '封禁'
+};
+
+export const userStatusColor = {
+  NOTLOGGED: 'grey-9',
+  LOGGED: 'green',
+  LOCKED: 'red'
+};
+
+export const membershipStatus = {
+  TRUE: '会员',
+  FALSE: '非会员'
+};
+
+export const membershipStatusColor = {
+  TRUE: 'green',
+  FALSE: 'grey-9'
+};
+
 export const userSex = ['男', '女', '未知'];
 
 export const loginStatus = {
@@ -52,10 +74,7 @@ export const routerPermissionEnum = [
   {
     id: 1,
     comment: '主页',
-    label: '主页',
-    value: {
-      id: 1
-    }
+    label: '主页'
   },
   {
     id: 2,

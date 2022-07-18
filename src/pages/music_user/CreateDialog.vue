@@ -2,19 +2,10 @@
   <q-dialog v-model="show" persistent>
     <q-card style="min-width: 350px; padding: 20px 10px">
       <q-card-section>
-        <div class="text-h6">添加用户</div>
+        <div class="text-h6">编辑用户</div>
       </q-card-section>
       <q-form @submit="isEdit ? editUser() : createUser()" class="q-gutter-md">
         <q-card-section>
-          <q-input
-            dense
-            v-model="user.username"
-            label="用户名"
-            autofocus
-            @keyup.enter="show = false"
-            :rules="[val => (val && val.length > 0) || '请填写用户名！']"
-          />
-
           <q-input
             dense
             v-model="user.nick_name"
@@ -29,6 +20,14 @@
             dense
             v-model="user.address"
             label="地址"
+            autofocus
+            @keyup.enter="show = false"
+          />
+
+          <q-input
+            dense
+            v-model="user.introduction"
+            label="个人简介"
             autofocus
             @keyup.enter="show = false"
           />
@@ -50,7 +49,7 @@
 
 <script setup>
 import { reactive, ref } from 'vue';
-import { create, update } from '../../api/user.js';
+import { create, update } from '../../api/music-user.js';
 import notify from '../../utils/notify.js';
 import { userSex } from '../../utils/dict.js';
 
@@ -67,7 +66,7 @@ const options = userSex;
 const show = ref(true);
 
 const isEdit = ref(Boolean(props.data));
-const user = reactive(props.data || { name: '', description: '' });
+const user = reactive(props.data || { name: '', introduction: '' });
 
 const loading = ref(false);
 
@@ -77,7 +76,7 @@ const createUser = () => {
   create(user).then(createdUser => {
     loading.value = false;
     show.value = false;
-    notify.success(`用户《${createdUser.username}》创建成功！`);
+    notify.success(`用户《${createdUser}》创建成功！`);
     emmit('create-success');
   });
 };
@@ -88,7 +87,7 @@ const editUser = () => {
     loading.value = false;
     console.log(user);
     show.value = false;
-    notify.success(`用户《${updatedUser.username}》更新成功！`);
+    notify.success(`用户${updatedUser}更新成功！`);
     emmit('edit-success');
   });
 };

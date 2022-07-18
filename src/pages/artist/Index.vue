@@ -135,7 +135,7 @@ const publishArtist = id => {
 };
 const closeArtist = id => {
   close(id).then(() => {
-    notify.success('下线该艺术家成功！');
+    notify.success('已成功下线该艺术家！');
     fetchData();
   });
 };

@@ -2,7 +2,7 @@
   <q-dialog v-model="show" persistent>
     <q-card style="min-width: 350px; padding: 20px 10px">
       <q-card-section>
-        <div class="text-h6">公告</div>
+        <div class="text-h6">编辑公告</div>
       </q-card-section>
       <q-form
         @submit="isEdit ? editNotice() : createNotice()"
