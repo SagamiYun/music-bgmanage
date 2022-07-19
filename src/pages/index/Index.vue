@@ -7,6 +7,12 @@
       </q-card-section>
       <div class="q-pa-md" style="max-width: 445px">
         <q-list bordered separator>
+          <q-spinner-hourglass
+            v-if="hourglassLoading"
+            color="blue"
+            size="5em"
+            style="margin-left: 180px"
+          />
           <div v-for="item in noticePushList" :key="item.title">
             <q-item clickable v-ripple active-class="menu-active text-white">
               <q-item-section avatar>
@@ -53,6 +59,7 @@ export default {
     const editRow = ref('');
     const noticePushList = ref([]);
     const createDialogShow = ref(false);
+    const hourglassLoading = ref(true);
     const createDialog = useToggleDialog(createDialogShow);
     const edit = row => {
       editRow.value = row;
@@ -60,6 +67,7 @@ export default {
     };
     const fetchData = () => {
       pushList().then(getPushList => {
+        hourglassLoading.value = false;
         noticePushList.value = getPushList.content;
       });
     };
@@ -70,6 +78,7 @@ export default {
       fetchData,
       createDialog,
       noticePushList,
+      hourglassLoading,
       createDialogShow,
       nickname: computed(() => store.state.user.currentUser.nick_name),
       logout: () =>

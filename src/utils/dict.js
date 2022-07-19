@@ -44,6 +44,16 @@ export const membershipStatusColor = {
   FALSE: 'grey-9'
 };
 
+export const commentStatus = {
+  TRUE: '封禁',
+  FALSE: '正常'
+};
+
+export const commentStatusColor = {
+  TRUE: 'red',
+  FALSE: 'green'
+};
+
 export const userSex = ['男', '女', '未知'];
 
 export const loginStatus = {

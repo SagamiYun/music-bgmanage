@@ -99,7 +99,7 @@ const editNotice = () => {
   update(notice).then(updatedUser => {
     loading.value = false;
     show.value = false;
-    notify.success(`用户《${updatedUser.title}》更新成功！`);
+    notify.success(`公告《${updatedUser.title}》更新成功！`);
     emmit('edit-success');
   });
 };
