@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <div>欢迎光临 {{ nickname }}</div>
+    <div class="text-h5">欢迎光临 {{ nickname }}</div>
     <q-card flat bordered class="my-card">
       <q-card-section>
         <div class="text-h6">系统公告</div>

@@ -85,7 +85,7 @@
                 />
 
                 <q-toggle
-                  v-model="ConfigData.change_ueer_password"
+                  v-model="ConfigData.change_user_password"
                   true-value="TRUE"
                   false-value="FALSE"
                   label="修改个人密码"
