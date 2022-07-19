@@ -36,7 +36,7 @@
                   v-model="ConfigData.super_admin_login"
                   true-value="TRUE"
                   false-value="FALSE"
-                  label="只允许管理员登录"
+                  label="只允许超级管理员登录"
                 />
 
                 <q-toggle

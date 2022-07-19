@@ -137,10 +137,12 @@ const columns = [
   },
   {
     field: 'sex',
+    align: 'center',
     label: '性别'
   },
   {
     field: 'phone',
+    align: 'center',
     label: '绑定手机号'
   },
   {
