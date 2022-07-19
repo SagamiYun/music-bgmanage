@@ -251,7 +251,7 @@ const router_columns = [
   }
 ];
 
-const slide = ref('style');
+const slide = ref('adminRole');
 const options = routerPermissionEnum;
 const pagination = ref({
   page: 1,
