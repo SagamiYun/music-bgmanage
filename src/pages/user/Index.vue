@@ -1,7 +1,11 @@
 <template>
   <div class="page">
     <div class="q-mt-md q-mb-md">
-      <q-btn color="primary" label="添加管理员" @click="edit" />
+      <q-btn
+        color="primary"
+        label="添加管理员"
+        @click="createDialog.showDialog()"
+      />
     </div>
     <q-table
       :loading="loadingUser"

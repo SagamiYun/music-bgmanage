@@ -1,7 +1,11 @@
 <template>
   <div class="page">
     <div class="q-mt-md q-mb-md">
-      <q-btn color="primary" label="添加专辑" @click="edit" />
+      <q-btn
+        color="primary"
+        label="添加专辑"
+        @click="createDialog.showDialog()"
+      />
     </div>
     <q-table
       :columns="columns"
