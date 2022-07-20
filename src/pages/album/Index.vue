@@ -1,11 +1,7 @@
 <template>
   <div class="page">
     <div class="q-mt-md q-mb-md">
-      <q-btn
-        color="primary"
-        label="添加专辑"
-        @click="createDialog.showDialog()"
-      />
+      <q-btn color="primary" label="添加专辑" @click="edit" />
     </div>
     <q-table
       :columns="columns"
@@ -24,12 +20,19 @@
       </template>
       <template v-slot:body-cell-operation="props">
         <q-td :props="props">
+          <q-btn
+            size="sm"
+            style="background: #ff0080; color: white"
+            label="编辑歌曲关系"
+            @click="editMusic(props.row)"
+          />
           <q-btn-dropdown
             size="sm"
             split
             color="primary"
-            label="编辑"
+            label="编辑内容"
             @click="edit(props.row)"
+            style="margin-left: 5px"
           >
             <q-list dense>
               <q-item
@@ -63,6 +66,12 @@
       @hide="createDialog.hideDialog()"
       @create-success="fetchData"
     />
+    <edit-album-music
+      v-if="createRelationshipShow"
+      :data="{ editRow, musicOption }"
+      @hide="createRelationship.hideDialog()"
+      @create-success="fetchData"
+    />
   </div>
 </template>
 
@@ -73,6 +82,7 @@ import { useToggleDialog } from '../../composables/useToggleDialog.js';
 import CreateDialog from './CreateDialog.vue';
 import { musicStatus, musicStatusColor } from '../../utils/dict.js';
 import notify from '../../utils/notify.js';
+import EditAlbumMusic from './EditAlbumMusic.vue';
 
 const columns = [
   {
@@ -81,6 +91,7 @@ const columns = [
     label: '专辑名'
   },
   {
+    align: 'center',
     name: 'description',
     field: 'description',
     label: '简介'
@@ -92,25 +103,34 @@ const columns = [
     label: '上架状态'
   },
   {
+    align: 'center',
     name: 'operation',
     field: 'operation',
     label: '操作'
   }
 ];
+
 const data = ref([]);
+const musicOption = ref([]);
 const createDialogShow = ref(false);
+const createRelationshipShow = ref(false);
 const createDialog = useToggleDialog(createDialogShow);
+const createRelationship = useToggleDialog(createRelationshipShow);
 const editRow = ref(null);
 const loadingAlbum = ref(true);
 const pagination = ref({
   page: 1,
   rowsPerPage: 10
 });
-
 const edit = row => {
   editRow.value = row;
   createDialog.showDialog();
 };
+const editMusic = row => {
+  editRow.value = row;
+  createRelationship.showDialog();
+};
+
 const fetchData = () => {
   const pageable = {
     page: pagination.value.page - 1,
@@ -121,6 +141,7 @@ const fetchData = () => {
     data.value = albumList.content;
     pagination.value.page = albumList.number + 1;
     pagination.value.rowsNumber = albumList.totalElements;
+    musicOption.value = albumList.music;
   });
 };
 

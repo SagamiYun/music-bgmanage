@@ -1,11 +1,7 @@
 <template>
   <div class="page">
     <div class="q-mt-md q-mb-md">
-      <q-btn
-        color="primary"
-        label="添加公告"
-        @click="createDialog.showDialog()"
-      />
+      <q-btn color="primary" label="添加公告" @click="edit" />
     </div>
     <q-table
       :loading="loadingNotice"

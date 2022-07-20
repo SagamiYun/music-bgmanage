@@ -35,7 +35,7 @@ const drawLine = () => {
       '#f2c037'
     ],
     title: {
-      text: '各地区用户比例统计图',
+      text: '管理员各地区比例统计图',
       subtext: '虚拟数据',
       left: 'left'
     },
@@ -76,9 +76,4 @@ const drawLine = () => {
 onMounted(drawLine);
 </script>
 
-<style scoped>
-.container-fluid {
-  margin: 0;
-  padding: 0;
-}
-</style>
+<style scoped></style>

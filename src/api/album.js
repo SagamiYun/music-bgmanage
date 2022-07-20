@@ -19,3 +19,7 @@ export const publish = id => {
 export const close = id => {
   return post('/album/close', id);
 };
+
+export const updateAlbumMusic = (id, AlbumMusic) => {
+  return post('/album/updateAlbumMusic', { id, AlbumMusic });
+};

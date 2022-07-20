@@ -80,6 +80,8 @@ export const noticeStatusColor = {
   DRAFT: 'grey-9'
 };
 
+export const musicOptions = [];
+
 export const routerPermissionEnum = [
   {
     id: 1,
