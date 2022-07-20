@@ -28,12 +28,22 @@ export const changePassword = (password, newPassword) => {
   return post('/users/changePassword', { password, newPassword });
 };
 
-export const changeUserInfo = (username, nick_name, address, age, sex) => {
+export const changeUserInfo = (
+  username,
+  nick_name,
+  address,
+  age,
+  sex,
+  email,
+  phone
+) => {
   return post('/users/changeUserInfo', {
     username,
     nick_name,
     address,
     age,
-    sex
+    sex,
+    email,
+    phone
   });
 };

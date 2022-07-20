@@ -2,38 +2,20 @@
   <q-dialog v-model="show" persistent>
     <q-card style="min-width: 350px; padding: 20px 10px">
       <q-card-section>
-        <div class="text-h6">添加用户</div>
+        <div class="text-h6">编辑评论</div>
       </q-card-section>
-      <q-form @submit="isEdit ? editUser() : createUser()" class="q-gutter-md">
-        <q-card-section>
-          <q-input
-            dense
-            v-model="user.username"
-            label="用户名"
-            autofocus
-            @keyup.enter="show = false"
-            :rules="[val => (val && val.length > 0) || '请填写用户名！']"
+      <q-form
+        @submit="isEdit ? editComment() : createComment()"
+        class="q-gutter-md"
+      >
+        <div class="q-pa-md q-gutter-sm">
+          <q-editor
+            v-model="comment.content"
+            :definitions="{
+              bold: { label: 'Bold', icon: null, tip: 'My bold tooltip' }
+            }"
           />
-
-          <q-input
-            dense
-            v-model="user.nick_name"
-            label="昵称"
-            autofocus
-            @keyup.enter="show = false"
-          />
-
-          <q-select v-model="user.sex" :options="options" label="性别" />
-
-          <q-input
-            dense
-            v-model="user.address"
-            label="地址"
-            autofocus
-            @keyup.enter="show = false"
-          />
-        </q-card-section>
-
+        </div>
         <q-card-actions align="right" class="text-primary">
           <q-btn
             :loading="loading"
@@ -50,9 +32,8 @@
 
 <script setup>
 import { reactive, ref } from 'vue';
-import { create, update } from '../../api/user.js';
+import { create, update } from '../../api/comment.js';
 import notify from '../../utils/notify.js';
-import { userSex } from '../../utils/dict.js';
 
 const props = defineProps({
   data: {
@@ -63,32 +44,38 @@ const props = defineProps({
   }
 });
 
-const options = userSex;
 const show = ref(true);
 
 const isEdit = ref(Boolean(props.data));
-const user = reactive(props.data || { name: '', description: '' });
+const comment = reactive(
+  props.data || {
+    content: '请输入评论内容'
+  }
+);
 
 const loading = ref(false);
 
 const emmit = defineEmits(['create-success']);
-const createUser = () => {
+const createComment = () => {
   loading.value = true;
-  create(user).then(createdUser => {
-    loading.value = false;
-    show.value = false;
-    notify.success(`用户《${createdUser.username}》创建成功！`);
-    emmit('create-success');
-  });
+  create(comment)
+    .then(createdComment => {
+      loading.value = false;
+      show.value = false;
+      notify.success(`${createdComment}从属评论创建成功！`);
+      emmit('create-success');
+    })
+    .catch(() => {
+      loading.value = false;
+    });
 };
 
-const editUser = () => {
+const editComment = () => {
   loading.value = true;
-  update(user).then(updatedUser => {
+  update(comment).then(updatedComment => {
     loading.value = false;
-    console.log(user);
     show.value = false;
-    notify.success(`用户《${updatedUser.username}》更新成功！`);
+    notify.success(`${updatedComment}从属评论更新成功！`);
     emmit('edit-success');
   });
 };

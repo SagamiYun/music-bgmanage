@@ -1,15 +1,27 @@
 <template>
   <div class="page">
     <div class="q-mt-md q-mb-md">
-      <q-btn
-        color="primary"
-        label="添加用户"
-        @click="createDialog.showDialog()"
-      />
+      <q-card-section>
+        <q-input
+          dense
+          filled
+          square
+          style="width: 500px"
+          v-model="inSearch"
+          label="查找用户名"
+        >
+          <q-btn
+            style="width: 100px"
+            size="sm"
+            color="primary"
+            label="检索用户"
+            @click="fetchData()"
+        /></q-input>
+      </q-card-section>
     </div>
     <q-table
-      :loading="loadingUser"
-      :rows="data"
+      :loading="loadingMusicUser"
+      :rows="MusicUserData"
       :columns="columns"
       row-key="name"
       @request="fetchData"
@@ -18,9 +30,19 @@
       <template v-slot:body-cell-status="props">
         <q-td :props="props">
           <q-badge
-            :color="loginStatusColor[props.value]"
+            :color="userStatusColor[props.value]"
             outline
-            :label="loginStatus[props.value]"
+            :label="userStatus[props.value]"
+          />
+        </q-td>
+      </template>
+
+      <template v-slot:body-cell-membership="props">
+        <q-td :props="props">
+          <q-badge
+            :color="membershipStatusColor[props.value]"
+            outline
+            :label="membershipStatus[props.value]"
           />
         </q-td>
       </template>
@@ -35,9 +57,44 @@
             @click="edit(props.row)"
           >
             <q-list dense>
-              <q-item clickable v-close-popup @click="deleteUser(props.row.id)">
+              <q-item
+                v-if="props.row.status !== 'LOCKED'"
+                clickable
+                v-close-popup
+                @click="lockUser(props.row.id)"
+              >
                 <q-item-section>
-                  <q-item-label>删除</q-item-label>
+                  <q-item-label>封禁该用户</q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item
+                v-if="props.row.status === 'LOCKED'"
+                clickable
+                v-close-popup
+                @click="freeUser(props.row.id)"
+              >
+                <q-item-section>
+                  <q-item-label>解禁该用户</q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item
+                v-if="props.row.membership !== 'TRUE'"
+                clickable
+                v-close-popup
+                @click="upMembership(props.row.id)"
+              >
+                <q-item-section>
+                  <q-item-label>修改当前用户为会员</q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item
+                v-if="props.row.membership !== 'FALSE'"
+                clickable
+                v-close-popup
+                @click="downMembership(props.row.id)"
+              >
+                <q-item-section>
+                  <q-item-label>修改当前用户为非会员</q-item-label>
                 </q-item-section>
               </q-item>
             </q-list>
@@ -55,13 +112,18 @@
 </template>
 
 <script setup>
-import { useUserSearch } from '../../composables/useUserSearch.js';
 import { useToggleDialog } from '../../composables/useToggleDialog.js';
 import CreateDialog from './CreateDialog.vue';
 import { ref } from 'vue';
+import {
+  userStatus,
+  userStatusColor,
+  membershipStatus,
+  membershipStatusColor
+} from '../../utils/dict.js';
+import { useMusicUserSearch } from '../../composables/useMusicUserSerach.js';
+import { downMS, free, lock, upMS } from '../../api/music-user.js';
 import notify from '../../utils/notify.js';
-import { del } from '../../api/user.js';
-import { loginStatus, loginStatusColor } from '../../utils/dict.js';
 
 const columns = [
   {
@@ -70,17 +132,35 @@ const columns = [
   },
   {
     field: 'nick_name',
+    align: 'center',
     label: '昵称'
   },
   {
     field: 'sex',
+    align: 'center',
     label: '性别'
+  },
+  {
+    field: 'phone',
+    align: 'center',
+    label: '绑定手机号'
+  },
+  {
+    field: 'email',
+    align: 'center',
+    label: '绑定邮箱'
   },
   {
     name: 'status',
     field: 'status',
     align: 'center',
     label: '登录状态'
+  },
+  {
+    name: 'membership',
+    field: 'membership',
+    align: 'center',
+    label: '会员状态'
   },
   {
     field: 'last_login_ip',
@@ -104,14 +184,34 @@ const pagination = ref({
   page: 1,
   rowsPerPage: 10
 });
-const deleteUser = id => {
-  del(id).then(() => {
-    notify.success('删除用户成功！');
+
+const lockUser = id => {
+  lock(id).then(() => {
+    notify.success('已封禁该用户！');
+    fetchData();
+  });
+};
+const freeUser = id => {
+  free(id).then(() => {
+    notify.success('已解禁该用户！');
+    fetchData();
+  });
+};
+const upMembership = id => {
+  upMS(id).then(() => {
+    notify.success('已修改当前用户为会员！');
+    fetchData();
+  });
+};
+const downMembership = id => {
+  downMS(id).then(() => {
+    notify.success('已修改当前用户为非会员！');
     fetchData();
   });
 };
 
-const { data, fetchData, loadingUser } = useUserSearch(pagination);
+const { MusicUserData, fetchData, loadingMusicUser, inSearch } =
+  useMusicUserSearch(pagination);
 </script>
 
 <style scoped></style>

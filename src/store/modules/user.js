@@ -1,9 +1,15 @@
 import {
+  getCurrentRouter,
   getCurrentUser,
+  getStatus,
   getToken,
+  removeCurrentRouter,
   removeCurrentUser,
+  removeStatus,
   removeToken,
+  setCurrentRouter,
   setCurrentUser,
+  setStatus,
   setToken
 } from '../../utils/auth.js';
 import { createToken } from '../../api/token.js';
@@ -13,7 +19,10 @@ import { ref } from 'vue';
 
 const state = () => ({
   token: getToken(),
-  currentUser: getCurrentUser()
+  currentUser: getCurrentUser(),
+  status: getStatus(),
+  router: getCurrentRouter(),
+  routerMark: false
 });
 
 const getters = {
@@ -32,11 +41,15 @@ const actions = {
     return new Promise((resolve, reject) => {
       let showValidCode = ref(false);
       createToken(username.trim(), password)
-        .then(token => {
+        .then(res => {
           showValidCode.value = false;
           resolve(showValidCode.value);
-          commit('SET_TOKEN', token);
-          setToken(token);
+          commit('SET_STATUS', res.status);
+          setStatus(res.status);
+          commit('SET_TOKEN', res.token);
+          setToken(res.token);
+          commit('SET_ROUTER', res.router);
+          setCurrentRouter(res.router);
         })
         .catch(error => {
           console.log(error);
@@ -53,14 +66,17 @@ const actions = {
       if (userInfo.status !== 0) {
         commit('SET_TOKEN', '');
         commit('SET_CURRENT_USER', null);
+        commit('SET_STATUS', '');
+        commit('SET_ROUTER', null);
         removeToken();
         removeCurrentUser();
+        removeStatus();
+        removeCurrentRouter();
         window.location.reload();
       }
     });
   },
   changPassword({ commit }, { password, newPassword }) {
-    // TODO 请重构修改密码后登出刷新页面
     return new Promise((resolve, reject) => {
       changePassword(password, newPassword)
         .then(ref => {
@@ -71,9 +87,12 @@ const actions = {
         });
     });
   },
-  changUserInfo({ commit }, { username, nick_name, address, age, sex }) {
+  changUserInfo(
+    { commit },
+    { username, nick_name, address, age, sex, email, phone }
+  ) {
     return new Promise((resolve, reject) => {
-      changeUserInfo(username, nick_name, address, age, sex)
+      changeUserInfo(username, nick_name, address, age, sex, email, phone)
         .then(ref => {
           notify.success(`用户${ref.username}信息更新成功！`);
         })
@@ -103,6 +122,12 @@ const mutations = {
   },
   SET_CURRENT_USER: (state, currentUser) => {
     state.currentUser = currentUser;
+  },
+  SET_STATUS: (state, status) => {
+    state.status = status;
+  },
+  SET_ROUTER: (state, currentRouter) => {
+    state.router = currentRouter;
   }
 };
 

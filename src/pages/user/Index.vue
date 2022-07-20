@@ -1,11 +1,7 @@
 <template>
   <div class="page">
     <div class="q-mt-md q-mb-md">
-      <q-btn
-        color="primary"
-        label="添加用户"
-        @click="createDialog.showDialog()"
-      />
+      <q-btn color="primary" label="添加管理员" @click="edit" />
     </div>
     <q-table
       :loading="loadingUser"
@@ -71,7 +67,7 @@ import { loginStatus, loginStatusColor } from '../../utils/dict.js';
 const columns = [
   {
     field: 'username',
-    label: '用户名'
+    label: '管理员名'
   },
   {
     field: 'nick_name',
@@ -109,9 +105,8 @@ const pagination = ref({
   rowsPerPage: 10
 });
 const deleteUser = id => {
-  console.log(id);
   del(id).then(() => {
-    notify.success('删除用户成功！');
+    notify.success('删除管理员成功！');
     fetchData();
   });
 };

@@ -2,7 +2,7 @@
   <q-dialog v-model="show" persistent>
     <q-card style="min-width: 350px; padding: 20px 10px">
       <q-card-section>
-        <div class="text-h6">添加用户</div>
+        <div class="text-h6">添加管理员</div>
       </q-card-section>
       <q-form @submit="isEdit ? editUser() : createUser()" class="q-gutter-md">
         <q-card-section>
@@ -23,12 +23,39 @@
             @keyup.enter="show = false"
           />
 
-          <q-select v-model="user.sex" :options="options" label="性别" />
+          <q-select dense v-model="user.sex" :options="options" label="性别" />
+
+          <q-input
+            dense
+            type="tel"
+            v-model="user.phone"
+            label="手机号码"
+            autofocus
+            @keyup.enter="show = false"
+          />
+
+          <q-input
+            dense
+            type="email"
+            v-model="user.email"
+            label="邮箱地址"
+            autofocus
+            @keyup.enter="show = false"
+          />
 
           <q-input
             dense
             v-model="user.address"
             label="地址"
+            autofocus
+            @keyup.enter="show = false"
+          />
+
+          <q-input
+            dense
+            type="number"
+            v-model="user.age"
+            label="年龄"
             autofocus
             @keyup.enter="show = false"
           />
@@ -78,7 +105,7 @@ const createUser = () => {
     .then(createdUser => {
       loading.value = false;
       show.value = false;
-      notify.success(`用户${createdUser.username}创建成功！`);
+      notify.success(`管理员${createdUser.username}创建成功！`);
       emmit('create-success');
     })
     .catch(() => {
@@ -92,7 +119,7 @@ const editUser = () => {
     loading.value = false;
     console.log(user);
     show.value = false;
-    notify.success(`用户${updatedUser.username}更新成功！`);
+    notify.success(`管理员${updatedUser.username}更新成功！`);
     emmit('edit-success');
   });
 };

@@ -7,7 +7,6 @@ export const useUserSearch = pagination => {
   const loadingUser = ref(true);
 
   const fetchData = () => {
-    console.log(pagination.value);
     const pageable = {
       page: pagination.value.page - 1,
       size: pagination.value.rowsPerPage

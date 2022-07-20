@@ -5,5 +5,5 @@ export const initUpload = file => {
 };
 
 export const finishUpload = fileId => {
-  return post(`/files/${fileId}/upload_finish`);
+  return post(`/files/upload_finish`, fileId);
 };

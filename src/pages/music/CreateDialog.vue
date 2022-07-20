@@ -27,7 +27,7 @@
           />
         </q-card-section>
         <q-card-section>
-          <uploader label="上传音乐" v-model:file="music.file" />
+          <uploader label="上传音乐" v-model:file="music.music_file" />
         </q-card-section>
 
         <q-card-actions align="right" class="text-primary">
@@ -64,7 +64,7 @@ const emmit = defineEmits(['create-success']);
 const createMusic = () => {
   create(music).then(createdMusic => {
     show.value = false;
-    notify.success(`音乐《${createdMusic.name}》创建成功！`);
+    notify.success(`音乐《${createdMusic}》创建成功！`);
     emmit('create-success');
   });
 };
@@ -72,7 +72,7 @@ const createMusic = () => {
 const editMusic = () => {
   update(music.id, music).then(updatedMusic => {
     show.value = false;
-    notify.success(`音乐《${updatedMusic.name}》更新成功！`);
+    notify.success(`音乐《${updatedMusic}》更新成功！`);
     emmit('edit-success');
   });
 };

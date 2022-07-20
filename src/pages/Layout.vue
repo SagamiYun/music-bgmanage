@@ -4,7 +4,7 @@
       <q-toolbar>
         <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
 
-        <q-toolbar-title> SaKaTi音乐后台系统</q-toolbar-title>
+        <q-toolbar-title> SaKaTi音乐后台 </q-toolbar-title>
 
         <q-space />
         <q-avatar color="teal" text-color="white"

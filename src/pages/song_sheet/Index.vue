@@ -1,43 +1,57 @@
 <template>
   <div class="page">
     <div class="q-mt-md q-mb-md">
-      <q-btn
-        color="primary"
-        label="添加用户"
-        @click="createDialog.showDialog()"
-      />
+      <q-btn color="primary" label="添加歌单" @click="edit" />
     </div>
     <q-table
-      :loading="loadingUser"
-      :rows="data"
       :columns="columns"
-      row-key="name"
-      @request="fetchData"
-      v-model:pagination="pagination"
+      :rows="data"
+      row-key="id"
+      :loading="loadingSongsheet"
     >
       <template v-slot:body-cell-status="props">
         <q-td :props="props">
           <q-badge
-            :color="loginStatusColor[props.value]"
+            :color="noticeStatusColor[props.value]"
             outline
-            :label="loginStatus[props.value]"
+            :label="noticeStatus[props.value]"
           />
         </q-td>
       </template>
-
       <template v-slot:body-cell-operation="props">
         <q-td :props="props">
+          <q-btn
+            size="sm"
+            style="background: #ff9800; color: white; margin-right: 5px"
+            label="编辑歌曲关系"
+            @click="editMusic(props.row)"
+          />
           <q-btn-dropdown
             size="sm"
             split
             color="primary"
-            label="编辑"
+            label="编辑内容"
             @click="edit(props.row)"
           >
             <q-list dense>
-              <q-item clickable v-close-popup @click="deleteUser(props.row.id)">
+              <q-item
+                v-if="props.row.status !== 'PUSH'"
+                clickable
+                v-close-popup
+                @click="publishSongsheet(props.row.id)"
+              >
                 <q-item-section>
-                  <q-item-label>删除</q-item-label>
+                  <q-item-label>上线</q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item
+                v-if="props.row.status === 'PUSH'"
+                clickable
+                v-close-popup
+                @click="closeSongsheet(props.row.id)"
+              >
+                <q-item-section>
+                  <q-item-label>下线</q-item-label>
                 </q-item-section>
               </q-item>
             </q-list>
@@ -51,40 +65,40 @@
       @hide="createDialog.hideDialog()"
       @create-success="fetchData"
     />
+    <edit-songsheet-music
+      v-if="createRelationshipShow"
+      :data="{ editRow, musicOption }"
+      @hide="createRelationship.hideDialog()"
+      @create-success="fetchData"
+    />
   </div>
 </template>
 
 <script setup>
-import { useUserSearch } from '../../composables/useUserSearch.js';
+import { onMounted, ref } from 'vue';
+import { close, list, publish } from '../../api/songsheet.js';
 import { useToggleDialog } from '../../composables/useToggleDialog.js';
 import CreateDialog from './CreateDialog.vue';
-import { ref } from 'vue';
+import { noticeStatus, noticeStatusColor } from '../../utils/dict.js';
 import notify from '../../utils/notify.js';
-import { del } from '../../api/user.js';
-import { loginStatus, loginStatusColor } from '../../utils/dict.js';
+import EditSongsheetMusic from './EditSongsheetMusic.vue';
 
 const columns = [
   {
-    field: 'username',
-    label: '用户名'
+    name: 'name',
+    field: 'name',
+    label: '歌单名'
   },
   {
-    field: 'nick_name',
-    label: '昵称'
-  },
-  {
-    field: 'sex',
-    label: '性别'
+    name: 'description',
+    field: 'description',
+    label: '简介'
   },
   {
     name: 'status',
     field: 'status',
     align: 'center',
-    label: '登录状态'
-  },
-  {
-    field: 'last_login_ip',
-    label: '最后登陆地址'
+    label: '上架状态'
   },
   {
     name: 'operation',
@@ -92,26 +106,56 @@ const columns = [
     label: '操作'
   }
 ];
-const editRow = ref(null);
+const data = ref([]);
+const musicOption = ref([]);
 const createDialogShow = ref(false);
+const createRelationshipShow = ref(false);
 const createDialog = useToggleDialog(createDialogShow);
-const edit = row => {
-  editRow.value = row;
-  console.log(editRow.value);
-  createDialog.showDialog();
-};
+const createRelationship = useToggleDialog(createRelationshipShow);
+const editRow = ref(null);
+const loadingSongsheet = ref(true);
 const pagination = ref({
   page: 1,
   rowsPerPage: 10
 });
-const deleteUser = id => {
-  del(id).then(() => {
-    notify.success('删除用户成功！');
-    fetchData();
+
+const edit = row => {
+  editRow.value = row;
+  createDialog.showDialog();
+};
+const editMusic = row => {
+  editRow.value = row;
+  createRelationship.showDialog();
+};
+
+const fetchData = () => {
+  const pageable = {
+    page: pagination.value.page - 1,
+    size: pagination.value.rowsPerPage
+  };
+  list(pageable).then(songsheetList => {
+    loadingSongsheet.value = false;
+    data.value = songsheetList.content;
+    pagination.value.page = songsheetList.number + 1;
+    pagination.value.rowsNumber = songsheetList.totalElements;
+    musicOption.value = songsheetList.music;
   });
 };
 
-const { data, fetchData, loadingUser } = useUserSearch(pagination);
+onMounted(fetchData);
+
+const publishSongsheet = id => {
+  publish(id).then(() => {
+    notify.success('歌单上线成功！');
+    fetchData();
+  });
+};
+const closeSongsheet = id => {
+  close(id).then(() => {
+    notify.success('歌单下线成功！');
+    fetchData();
+  });
+};
 </script>
 
 <style scoped></style>

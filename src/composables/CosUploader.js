@@ -32,7 +32,7 @@ export default createUploaderComponent({
             ext: file.name.substring(file.name.lastIndexOf('.'))
           };
           initUpload(uploadFile).then(res => {
-            fileId.value = res.fileId;
+            fileId.value = res.file_id;
             callback({
               TmpSecretId: res.secretId,
               TmpSecretKey: res.secretKey,

@@ -2,11 +2,25 @@ import Cookies from 'js-cookie';
 
 const TokenKey = 'SaKaTi-token';
 const UserKey = 'current-user';
+const StatusKey = 'current-status';
+const RouterKey = 'current-router';
 
 const defaultUser = {
   username: null,
   nickname: null,
-  roles: []
+  status: null
+};
+
+export const getStatus = () => {
+  return Cookies.get(StatusKey);
+};
+
+export const setStatus = status => {
+  return Cookies.set(StatusKey, status);
+};
+
+export const removeStatus = () => {
+  Cookies.remove(StatusKey);
 };
 
 export const getToken = () => {
@@ -32,4 +46,17 @@ export const getCurrentUser = () => {
 
 export const removeCurrentUser = () => {
   Cookies.remove(UserKey);
+};
+
+export const setCurrentRouter = currentRouter => {
+  return Cookies.set(RouterKey, JSON.stringify(currentRouter));
+};
+
+export const getCurrentRouter = () => {
+  const router = Cookies.get(RouterKey);
+  return router === undefined ? [] : JSON.parse(router);
+};
+
+export const removeCurrentRouter = () => {
+  Cookies.remove(RouterKey);
 };
