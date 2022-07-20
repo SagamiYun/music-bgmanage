@@ -22,12 +22,11 @@
         <q-td :props="props">
           <q-btn
             size="sm"
-            style="background: #ff9800; color: white"
+            style="background: #ff9800; color: white; margin-right: 5px"
             label="编辑歌曲关系"
             @click="editMusic(props.row)"
           />
           <q-btn-dropdown
-            style="margin-left: 5px"
             size="sm"
             split
             color="primary"
@@ -102,7 +101,6 @@ const columns = [
     label: '上架状态'
   },
   {
-    align: 'center',
     name: 'operation',
     field: 'operation',
     label: '操作'

@@ -20,11 +20,17 @@
       </template>
       <template v-slot:body-cell-operation="props">
         <q-td :props="props">
+          <q-btn
+            size="sm"
+            style="background: #009688; color: white; margin-right: 5px"
+            label="编辑歌曲关系"
+            @click="editMusic(props.row)"
+          />
           <q-btn-dropdown
             size="sm"
             split
             color="primary"
-            label="编辑"
+            label="编辑内容"
             @click="edit(props.row)"
           >
             <q-list dense>
@@ -59,6 +65,12 @@
       @hide="createDialog.hideDialog()"
       @create-success="fetchData"
     />
+    <edit-artist-music
+      v-if="createRelationshipShow"
+      :data="{ editRow, musicOption }"
+      @hide="createRelationship.hideDialog()"
+      @create-success="fetchData"
+    />
   </div>
 </template>
 
@@ -69,6 +81,7 @@ import { useToggleDialog } from '../../composables/useToggleDialog.js';
 import CreateDialog from './CreateDialog.vue';
 import { artistStatus, artistStatusColor } from '../../utils/dict.js';
 import notify from '../../utils/notify.js';
+import EditArtistMusic from './EditArtistMusic.vue';
 
 const columns = [
   {
@@ -95,8 +108,11 @@ const columns = [
   }
 ];
 const data = ref([]);
+const musicOption = ref([]);
 const createDialogShow = ref(false);
+const createRelationshipShow = ref(false);
 const createDialog = useToggleDialog(createDialogShow);
+const createRelationship = useToggleDialog(createRelationshipShow);
 const editRow = ref(null);
 const loadingArtist = ref(true);
 const pagination = ref({
@@ -108,6 +124,11 @@ const edit = row => {
   editRow.value = row;
   createDialog.showDialog();
 };
+const editMusic = row => {
+  editRow.value = row;
+  createRelationship.showDialog();
+};
+
 const fetchData = () => {
   const pageable = {
     page: pagination.value.page - 1,
@@ -118,6 +139,7 @@ const fetchData = () => {
     data.value = artistList.content;
     pagination.value.page = artistList.number + 1;
     pagination.value.rowsNumber = artistList.totalElements;
+    musicOption.value = artistList.music;
   });
 };
 

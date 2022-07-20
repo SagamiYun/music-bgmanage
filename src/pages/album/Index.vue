@@ -22,7 +22,7 @@
         <q-td :props="props">
           <q-btn
             size="sm"
-            style="background: #ff0080; color: white"
+            style="background: #ff0080; color: white; margin-right: 5px"
             label="编辑歌曲关系"
             @click="editMusic(props.row)"
           />
@@ -32,7 +32,6 @@
             color="primary"
             label="编辑内容"
             @click="edit(props.row)"
-            style="margin-left: 5px"
           >
             <q-list dense>
               <q-item
@@ -103,7 +102,6 @@ const columns = [
     label: '上架状态'
   },
   {
-    align: 'center',
     name: 'operation',
     field: 'operation',
     label: '操作'
