@@ -20,11 +20,18 @@
       </template>
       <template v-slot:body-cell-operation="props">
         <q-td :props="props">
+          <q-btn
+            size="sm"
+            style="background: #ff9800; color: white"
+            label="编辑歌曲关系"
+            @click="editMusic(props.row)"
+          />
           <q-btn-dropdown
+            style="margin-left: 5px"
             size="sm"
             split
             color="primary"
-            label="编辑"
+            label="编辑内容"
             @click="edit(props.row)"
           >
             <q-list dense>
@@ -59,6 +66,12 @@
       @hide="createDialog.hideDialog()"
       @create-success="fetchData"
     />
+    <edit-songsheet-music
+      v-if="createRelationshipShow"
+      :data="{ editRow, musicOption }"
+      @hide="createRelationship.hideDialog()"
+      @create-success="fetchData"
+    />
   </div>
 </template>
 
@@ -69,6 +82,7 @@ import { useToggleDialog } from '../../composables/useToggleDialog.js';
 import CreateDialog from './CreateDialog.vue';
 import { noticeStatus, noticeStatusColor } from '../../utils/dict.js';
 import notify from '../../utils/notify.js';
+import EditSongsheetMusic from './EditSongsheetMusic.vue';
 
 const columns = [
   {
@@ -88,14 +102,18 @@ const columns = [
     label: '上架状态'
   },
   {
+    align: 'center',
     name: 'operation',
     field: 'operation',
     label: '操作'
   }
 ];
 const data = ref([]);
+const musicOption = ref([]);
 const createDialogShow = ref(false);
+const createRelationshipShow = ref(false);
 const createDialog = useToggleDialog(createDialogShow);
+const createRelationship = useToggleDialog(createRelationshipShow);
 const editRow = ref(null);
 const loadingSongsheet = ref(true);
 const pagination = ref({
@@ -107,6 +125,11 @@ const edit = row => {
   editRow.value = row;
   createDialog.showDialog();
 };
+const editMusic = row => {
+  editRow.value = row;
+  createRelationship.showDialog();
+};
+
 const fetchData = () => {
   const pageable = {
     page: pagination.value.page - 1,
@@ -117,6 +140,7 @@ const fetchData = () => {
     data.value = songsheetList.content;
     pagination.value.page = songsheetList.number + 1;
     pagination.value.rowsNumber = songsheetList.totalElements;
+    musicOption.value = songsheetList.music;
   });
 };
 

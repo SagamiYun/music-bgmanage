@@ -2,15 +2,15 @@
   <q-dialog v-model="show" persistent>
     <q-card style="min-width: 350px; padding: 20px 10px">
       <q-card-section>
-        <div class="text-h6">编辑歌曲专辑关系</div>
+        <div class="text-h6">编辑歌曲歌单关系</div>
       </q-card-section>
-      <q-form @submit="editAlbum()" class="q-gutter-md">
+      <q-form @submit="editSongsheet()" class="q-gutter-md">
         <q-card-section>
           <q-input
             dense
             readonly
-            v-model="album.name"
-            label="专辑名"
+            v-model="songsheet.name"
+            label="歌单名"
             autofocus
             @keyup.enter="show = false"
           />
@@ -22,7 +22,7 @@
             options-dense
             transition-show="flip-up"
             transition-hide="flip-down"
-            v-model="album.album_musics"
+            v-model="songsheet.songsheet_musics"
             :options="options"
             label="歌曲选择"
             multiple
@@ -57,8 +57,8 @@
 
 <script setup>
 import { reactive, ref } from 'vue';
-import { updateAlbumMusic } from '../../api/album.js';
 import notify from '../../utils/notify.js';
+import { updateSongsheetMusic } from '../../api/songsheet.js';
 
 const props = defineProps({
   data: {
@@ -71,11 +71,11 @@ const props = defineProps({
 
 const show = ref(true);
 const options = ref(props.data.musicOption);
-const album = reactive(props.data.editRow || { name: '' });
-const editAlbum = () => {
-  updateAlbumMusic(album.id, album.album_musics).then(() => {
+const songsheet = reactive(props.data.editRow || { name: '' });
+const editSongsheet = () => {
+  updateSongsheetMusic(songsheet.id, songsheet.songsheet_musics).then(() => {
     show.value = false;
-    notify.success(`专辑关联音乐更新成功！`);
+    notify.success(`歌单关联音乐更新成功！`);
   });
 };
 </script>

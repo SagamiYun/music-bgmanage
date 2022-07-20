@@ -35,7 +35,7 @@ const drawLine = () => {
       '#f2c037'
     ],
     title: {
-      text: '管理员各地区比例统计图',
+      text: '各地区管理员比例统计图',
       subtext: '虚拟数据',
       left: 'left'
     },
