@@ -91,9 +91,9 @@ export default {
 <style lang="sass">
 .my-card
   cursor: pointer
-  margin-right: 30px
+  margin-right: 20px
   position: absolute
   right: 0
   width: 100vw
-  max-width: 450px
+  max-width: 435px
 </style>

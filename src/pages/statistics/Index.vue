@@ -15,9 +15,8 @@
 
 <script setup>
 import { getUserAddress } from '../../api/statistic.js';
-import { onMounted, ref } from 'vue';
+import { onMounted } from 'vue';
 import * as echarts from 'echarts';
-const tab = ref('mails');
 const drawLine = () => {
   let userAddressChart = echarts.init(
     document.getElementById('userAddressChart')
