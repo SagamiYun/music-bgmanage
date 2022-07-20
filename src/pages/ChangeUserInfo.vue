@@ -3,7 +3,7 @@
     <q-card class="login-form-content">
       <q-form
         class="q-gutter-md"
-        @submit="onSubmit(username, nick_name, address, age, sex)"
+        @submit="onSubmit(username, nick_name, address, age, sex, email, phone)"
       >
         <q-input
           filled
@@ -37,6 +37,16 @@
           :rules="[val => (val <= 100 && val > 0) || '请输入正确的年龄']"
         />
 
+        <q-input
+          filled
+          type="email"
+          v-model="email"
+          label="邮箱："
+          lazy-rules
+        />
+
+        <q-input filled type="tel" v-model="phone" label="电话：" lazy-rules />
+
         <q-select v-model="sex" :options="options" label="性别" />
 
         <div>
@@ -64,20 +74,25 @@ const nick_name = ref(userInfo.value.nick_name);
 const address = ref(userInfo.value.address);
 const age = ref(userInfo.value.age);
 const sex = ref(userInfo.value.sex);
+const email = ref(userInfo.value.email);
+const phone = ref(userInfo.value.phone);
 
-const onSubmit = (username, nick_name, address, age, sex) => {
+const onSubmit = (username, nick_name, address, age, sex, email, phone) => {
   store.dispatch('user/changUserInfo', {
     username,
     nick_name,
     address,
     age,
-    sex
+    sex,
+    email,
+    phone
   });
 };
 </script>
 
 <style scoped lang="less">
 .login-page {
+  margin-top: 75px;
   width: 75vw;
   height: 75vh;
   display: flex;

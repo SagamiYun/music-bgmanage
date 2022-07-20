@@ -77,7 +77,6 @@ const actions = {
     });
   },
   changPassword({ commit }, { password, newPassword }) {
-    // TODO 请重构修改密码后登出刷新页面
     return new Promise((resolve, reject) => {
       changePassword(password, newPassword)
         .then(ref => {
@@ -88,9 +87,12 @@ const actions = {
         });
     });
   },
-  changUserInfo({ commit }, { username, nick_name, address, age, sex }) {
+  changUserInfo(
+    { commit },
+    { username, nick_name, address, age, sex, email, phone }
+  ) {
     return new Promise((resolve, reject) => {
-      changeUserInfo(username, nick_name, address, age, sex)
+      changeUserInfo(username, nick_name, address, age, sex, email, phone)
         .then(ref => {
           notify.success(`用户${ref.username}信息更新成功！`);
         })

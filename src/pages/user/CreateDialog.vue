@@ -23,12 +23,39 @@
             @keyup.enter="show = false"
           />
 
-          <q-select v-model="user.sex" :options="options" label="性别" />
+          <q-select dense v-model="user.sex" :options="options" label="性别" />
+
+          <q-input
+            dense
+            type="tel"
+            v-model="user.phone"
+            label="手机号码"
+            autofocus
+            @keyup.enter="show = false"
+          />
+
+          <q-input
+            dense
+            type="email"
+            v-model="user.email"
+            label="邮箱地址"
+            autofocus
+            @keyup.enter="show = false"
+          />
 
           <q-input
             dense
             v-model="user.address"
             label="地址"
+            autofocus
+            @keyup.enter="show = false"
+          />
+
+          <q-input
+            dense
+            type="number"
+            v-model="user.age"
+            label="年龄"
             autofocus
             @keyup.enter="show = false"
           />
