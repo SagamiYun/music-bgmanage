@@ -64,13 +64,6 @@
                 />
 
                 <q-toggle
-                  v-model="ConfigData.message_board"
-                  true-value="TRUE"
-                  false-value="FALSE"
-                  label="留言板"
-                />
-
-                <q-toggle
                   v-model="ConfigData.push_notice"
                   true-value="TRUE"
                   false-value="FALSE"
