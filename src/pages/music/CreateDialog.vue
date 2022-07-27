@@ -56,9 +56,8 @@ const props = defineProps({
 
 const show = ref(true);
 
-const file = ref(null);
 const isEdit = ref(Boolean(props.data));
-const music = reactive(props.data || { name: '', description: '', file: null });
+const music = reactive(props.data || { name: '', description: '' });
 
 const emmit = defineEmits(['create-success']);
 const createMusic = () => {
